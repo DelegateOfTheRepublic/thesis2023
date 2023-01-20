@@ -56,6 +56,7 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = 'schedule_proj.urls'
+AUTH_USER_MODEL = 'schedule_app.User'
 
 TEMPLATES = [
     {
