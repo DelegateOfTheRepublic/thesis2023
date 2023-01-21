@@ -23,4 +23,4 @@ admin.site.register(StudyDay)
 admin.site.register(Subject)
 admin.site.register(Specialization)
 
-admin.site.register(User)
+admin.site.register(Person)

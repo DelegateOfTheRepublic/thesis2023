@@ -1,5 +1,5 @@
 from django.db import models
-from django.contrib.auth.models import AbstractUser
+from django.contrib.auth.models import User
 from django.core.validators import FileExtensionValidator
 
 # Create your models here.
@@ -84,15 +84,21 @@ class Position(models.Model):
     def __str__(self) -> str:
         return self.name
 
-class User(AbstractUser):
-    middle_name = models.CharField(max_length=256)
+def create_user_data_path(person, filename: str) -> str:
+    return f'users_data/{person.user.email}/{filename}'
+
+class Person(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    first_name = models.CharField(max_length=128)
+    middle_name = models.CharField(max_length=128)
+    last_name = models.CharField(max_length=128)
     phone = models.CharField(max_length=12)
-    avatar = models.ImageField() #TODO create an upload folder
+    avatar = models.ImageField(upload_to=create_user_data_path)
     show_conts = models.CharField(max_length=16, default='1, 1')
     from_another_uni = models.BooleanField(default=False)
-    teacher_schedule = models.FileField(validators=[FileExtensionValidator(allowed_extensions=["json"])]) #TODO create an upload folder
+    teacher_schedule = models.FileField(upload_to=create_user_data_path, validators=[FileExtensionValidator(allowed_extensions=["json"])])
     role = models.ForeignKey(Role, on_delete=models.SET_NULL, null=True)
-    position = models.ForeignKey(Position, on_delete=models.SET_NULL, null=True)
+    position = models.ForeignKey(Position, on_delete=models.SET_NULL, blank=True, null=True)
 
     def __str__(self) -> str:
         return f'{self.first_name} {self.last_name} {self.middle_name}'
@@ -100,10 +106,10 @@ class User(AbstractUser):
 class Link(models.Model):
     platform_name = models.CharField(max_length=256)
     link = models.CharField(max_length=256)
-    icon = models.ImageField() #TODO add the path to upload folder
+    icon = models.ImageField(upload_to='platform_icons/')
     meeting_ident = models.CharField(max_length=32, blank=True, null=True)
     passcode = models.CharField(max_length=16, blank=True, null=True)
-    teacher = models.ForeignKey(User, on_delete=models.CASCADE)
+    teacher = models.ForeignKey(Person, on_delete=models.CASCADE)
     subject = models.ForeignKey(Subject, on_delete=models.CASCADE)
 
     def __str__(self) -> str:
@@ -136,7 +142,7 @@ class StudyDay(models.Model):
     study_group = models.ForeignKey(StudyGroup, on_delete=models.CASCADE)
     lesson = models.ForeignKey(Lesson, on_delete=models.CASCADE)
     subject = models.ForeignKey(Subject, on_delete=models.CASCADE)
-    teacher = models.ForeignKey(User, on_delete=models.CASCADE)
+    teacher = models.ForeignKey(Person, on_delete=models.CASCADE)
     room = models.ForeignKey(Room, on_delete=models.CASCADE)
     study_format = models.ForeignKey(StudyFormat, on_delete=models.CASCADE)
     links = models.CharField(max_length=8, blank=True, null=True)
