@@ -75,6 +75,12 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'schedule_proj.wsgi.application'
 
+DEFAULT_PARSER_CLASSES = [
+    'rest_framework.parsers.JSONParser',
+    'rest_framework.parsers.FormParser',
+    'rest_framework.parsers.MultiPartParser',
+]
+
 
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases

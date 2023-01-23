@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 from django.core.validators import FileExtensionValidator
+from django.utils.translation import gettext_lazy as _
 
 # Create your models here.
 class StudyLevel(models.Model):
@@ -93,10 +94,10 @@ class Person(models.Model):
     middle_name = models.CharField(max_length=128)
     last_name = models.CharField(max_length=128)
     phone = models.CharField(max_length=12)
-    avatar = models.ImageField(upload_to=create_user_data_path)
+    avatar = models.ImageField(_("Image"), upload_to=create_user_data_path)
     show_conts = models.CharField(max_length=16, default='1, 1')
     from_another_uni = models.BooleanField(default=False)
-    teacher_schedule = models.FileField(upload_to=create_user_data_path, validators=[FileExtensionValidator(allowed_extensions=["json"])])
+    teacher_schedule = models.FileField(upload_to=create_user_data_path, validators=[FileExtensionValidator(allowed_extensions=["json"])], blank=True)
     role = models.ForeignKey(Role, on_delete=models.SET_NULL, null=True)
     position = models.ForeignKey(Position, on_delete=models.SET_NULL, blank=True, null=True)
 

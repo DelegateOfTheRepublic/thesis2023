@@ -1,4 +1,4 @@
-from turtle import position
+from pyexpat import model
 from rest_framework import serializers
 from .models import *
 from django.contrib.auth.models import User
@@ -75,19 +75,29 @@ class DepartmentBoardSerializer(serializers.ModelSerializer):
         model = Department
         fields = '__all__'
 
-class UserSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = User
-        fields = '__all__'
-
-class PersonSerializer(serializers.ModelSerializer):
-    user = UserSerializer()
-    role = RoleSerializer()
-    position = PositionSerializer()
-
+class TeacherSerializer(serializers.ModelSerializer):
+    email = serializers.CharField(source='user.email')
+    last_login = serializers.CharField(source='user.last_login', required=False)
+    date_joined = serializers.DateTimeField(source='user.date_joined')
+    role = serializers.CharField(source='role.name')
+    position = serializers.CharField(source='position.name')
     class Meta:
         model = Person
-        fields = '__all__'
+        fields = ['id', 'first_name', 'last_name', 'middle_name',
+                  'phone', 'email', 'show_conts', 'role', 'avatar', 
+                  'from_another_uni', 'teacher_schedule', 'position',
+                  'last_login', 'date_joined']
+
+class PersonSerializer(serializers.ModelSerializer):
+    email = serializers.CharField(source='user.email')
+    last_login = serializers.CharField(source='user.last_login', required=False)
+    date_joined = serializers.DateTimeField(source='user.date_joined')
+    role = serializers.CharField(source='role.name')
+    class Meta:
+        model = Person
+        fields = ['id', 'first_name', 'last_name', 'middle_name',
+                  'phone', 'email', 'show_conts', 'role',
+                  'avatar', 'last_login', 'date_joined']
 
 class LinkSerializer(serializers.ModelSerializer):
     teacher = PersonSerializer()
@@ -98,13 +108,18 @@ class LinkSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 class StudyDaySerializer(serializers.ModelSerializer):
-    study_group = StudyGroupSerializer()
-    lesson = LessonSerializer()
-    subject = SubjectSerializer()
-    teacher = PersonSerializer()
-    room = RoomSerializer()
-    study_format = StudyFormatSerializer()
+    study_group = serializers.CharField()
+    lesson = serializers.CharField()
+    subject = serializers.CharField()
+    teacher = serializers.CharField()
+    room = serializers.CharField()
+    study_format = serializers.CharField()
 
+    class Meta:
+        model = StudyDay
+        fields = '__all__'
+
+class StudyDayCreateSerializer(serializers.ModelSerializer):
     class Meta:
         model = StudyDay
         fields = '__all__'
