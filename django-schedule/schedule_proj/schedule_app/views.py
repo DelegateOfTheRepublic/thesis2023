@@ -2,6 +2,8 @@ from typing import List
 from django.http import HttpResponse, JsonResponse, HttpRequest, QueryDict
 from django.views.decorators.csrf import csrf_exempt
 from rest_framework import status
+from rest_framework.authentication import TokenAuthentication
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.renderers import JSONRenderer
 from rest_framework.parsers import *
 from rest_framework.views import APIView
@@ -10,6 +12,11 @@ from .serializers import *
 from .services import *
 
 # Create your views here.
+class Logout(APIView):
+    def get(self, request, format=None):
+        request.user.auth_token.delete()
+        return JsonResponse(status=status.HTTP_200_OK)
+
 class CourseApi(APIView):
     def get(self, request: HttpRequest) -> JsonResponse:
         serializer = CourseSerializer(SCourse.get_all(), many=True)
@@ -41,8 +48,11 @@ class PositionApi(APIView):
         return JsonResponse(serializer.data, safe=False)
 
 class PersonApi(APIView):
-    def get(self, request: HttpRequest) -> JsonResponse:
+    authentication_classes = (TokenAuthentication,)
+    permission_classes = (IsAuthenticated,)
+    def get(self, request) -> JsonResponse:
         #the code below is temporary
+        
         persons = SPerson.get_all()
         teacher_serializer: List[QueryDict] = []
         another_serializer: List[QueryDict] = []
@@ -64,28 +74,32 @@ class PersonApi(APIView):
 
     def post(self, request, format=None) -> JsonResponse:
         parser_classes = [MultiPartParser, FormParser]
-        #print('req: ', request.data)
-        #print(request.data.get('file'))
-        #data = json.loads(request.data.get('data'))
-        data = request.data
-        #avatar = request.data.get('avatar')
-        #data['avatar'] = request.data.get('file').name
-        role = data.get('role', None)
-        print(data)
+        role = request.data.get('role', None)
+        print(request.data)
 
         if role == '2':
-            serializer = TeacherSerializer(data=data)
+            serializer = TeacherSerializer(data=request.data)
             if serializer.is_valid():
                 print('val_data ', serializer.validated_data)
                 SPerson.create_teacher(serializer.validated_data)
                 return JsonResponse({'success': 'teacher created'})
         else:
-            serializer = PersonSerializer(data=data)
+            serializer = PersonSerializer(data=request.data)
             if serializer.is_valid():
                 SPerson.create_person(serializer.validated_data)
                 return JsonResponse({'success': 'person created'})
         
         return JsonResponse({'error': serializer.errors, 'status': status.HTTP_400_BAD_REQUEST})
+
+    def patch(self, request, format=None):
+        parser_classes = [MultiPartParser, FormParser]
+
+        serializer = PersonSerializer(SPerson.get_person_by_id(request.query_params.get('id', None)), data=request.data, partial=True)
+        if serializer.is_valid():
+            SPerson.update_person(serializer.validated_data)
+            return JsonResponse({'success': 'updated'})
+
+        return JsonResponse({'status':status.HTTP_400_BAD_REQUEST})
 
 class RoleApi(APIView):
     def get(self, request: HttpRequest) -> JsonResponse:

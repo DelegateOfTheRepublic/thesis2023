@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'schedule_app',
     'rest_framework',
+    'rest_framework.authtoken',
     'corsheaders',
     'djoser',
 ]
@@ -126,6 +127,12 @@ CORS_ALLOW_METHODS = [
     "POST",
     "PUT",
 ]
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.TokenAuthentication',
+    ]
+}
 
 # Internationalization
 # https://docs.djangoproject.com/en/4.1/topics/i18n/

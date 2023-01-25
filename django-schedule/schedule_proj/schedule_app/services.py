@@ -66,6 +66,10 @@ class SPerson:
 
         return Person.objects.create(**validated_data)
 
+    @classmethod
+    def update_person(self, validated_data):
+        return Person.objects.update(**validated_data)
+
 class SRole:
     @classmethod
     def get_all(self) -> Iterable[Role]:

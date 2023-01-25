@@ -1,10 +1,14 @@
 from django.urls import include, re_path
+from rest_framework.authtoken.views import obtain_auth_token
 from .views import CourseApi, DepartmentApi, DepartmentBoardApi, \
                    LessonApi, LinkApi, PersonApi, PositionApi, \
                    RoleApi, RoomApi, RoomTypeApi, SpecializationApi, \
                    StudyDayApi, StudyFormatApi, StudyGroupApi, StudyLevelApi, SubjectApi, UploadScheduleTemplatesApi
 
 urlpatterns = [
+    re_path(r'^auth/', include('djoser.urls')),
+    re_path(r'^auth/', include('djoser.urls.authtoken')),
+
     re_path(r'^courses/$', CourseApi.as_view()),
 
     re_path(r'^departments/$', DepartmentApi.as_view()),
