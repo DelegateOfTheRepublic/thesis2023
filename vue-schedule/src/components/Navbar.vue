@@ -8,7 +8,7 @@
                 <router-link to="/schedule">Расписание</router-link>
                 <router-link to="/create_schedule">Создать расписание</router-link>
                 <router-link to="/profile">Личный кабинет</router-link>
-                <div class="exit">
+                <div class="exit" @click="logout">
                     <svg xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svgjs="http://svgjs.com/svgjs" width="25" height="25" x="0" y="0" viewBox="0 0 512.016 512" style="enable-background:new 0 0 512 512" xml:space="preserve" class="">
                         <title>Выйти из системы</title>
                         <g>
@@ -24,7 +24,16 @@
 </template>
 
 <script>
-
+export default {
+    methods: {
+        logout(e) {
+            e.preventDefault()
+            localStorage.removeItem('token')
+            localStorage.removeItem('user')
+            this.$router.push('/login')
+        }
+    }
+}
 </script>
 
 <style scoped>

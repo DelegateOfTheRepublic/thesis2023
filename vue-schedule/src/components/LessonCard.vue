@@ -1,21 +1,21 @@
 <template>
     <div>
         <div class="info">
-            <p>Пара 1</p>
-            <p>8:30 - 9:50</p>
+            <p>Пара {{lesson_info.lesson.ordinal_number}}</p>
+            <p>{{getNormTime(lesson_info.lesson.start_time)}} - {{getNormTime(lesson_info.lesson.end_time)}}</p>
         </div>
         <div class="lesson-card">
             <div class="lesson-card__title">
-                <p class="lesson-card__info">Математическое программирование</p>
+                <p class="lesson-card__info">{{lesson_info.subject}}</p>
             </div>
             <div class="wrapper">
                 <div class="lesson-card__content">
                     <div class="lesson-card__aud_format">
-                        <p>Ауд. 511</p>
-                        <p>(с 08.09)</p>
-                        <p>ДФ</p>
+                        <p>{{lesson_info.room}}</p>
+                        <p>(с {{getNormDate(lesson_info.start_date)}})</p>
+                        <p>{{lesson_info.study_format}}</p>
                     </div>
-                    <p class="lesson-card__teacher">доц. Полупанов Д. В.</p>
+                    <p class="lesson-card__teacher">{{lesson_info.position}} {{lesson_info.teacher}}</p>
                 </div>
             </div>
         </div>
@@ -23,7 +23,19 @@
 </template>
 
 <script>
-
+export default {
+    props: ['lesson_info', 'isEmpty'],
+    methods: {
+        getNormDate(date) {
+            let newDate = date.split('-')
+            return `${newDate[2]}.${newDate[1]}`
+        },
+        getNormTime(time) {
+            let newTime = time.split(':')
+            return `${newTime[0]}:${newTime[1]}`
+        }
+    }
+}
 </script>
 
 <style scoped>
@@ -96,6 +108,14 @@
     padding: 1px;
     padding-left: 5px;
     padding-right: 5px;
+}
+
+.empty>p{
+    background-color: rgba(146, 146, 146, 0.762);
+}
+
+.lesson-card--empty{
+    background-color: rgba(146, 146, 146, 0.762);
 }
 
 p{

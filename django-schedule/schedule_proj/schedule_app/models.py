@@ -1,6 +1,8 @@
+from typing import Dict
 from django.db import models
 from django.contrib.auth.models import User
 from django.core.validators import FileExtensionValidator
+from django.http import QueryDict
 from django.utils.translation import gettext_lazy as _
 
 # Create your models here.
@@ -98,11 +100,12 @@ class Person(models.Model):
     show_conts = models.CharField(max_length=16, default='1, 1')
     from_another_uni = models.BooleanField(default=False)
     teacher_schedule = models.FileField(upload_to=create_user_data_path, validators=[FileExtensionValidator(allowed_extensions=["json"])], blank=True)
+    study_group = models.ForeignKey(StudyGroup, on_delete=models.SET_NULL, null=True, blank=True)
     role = models.ForeignKey(Role, on_delete=models.SET_NULL, null=True)
     position = models.ForeignKey(Position, on_delete=models.SET_NULL, blank=True, null=True)
 
     def __str__(self) -> str:
-        return f'{self.first_name} {self.last_name} {self.middle_name}'
+        return f'{self.last_name} {self.first_name[0]}. {self.middle_name[0]}.'
 
 class Link(models.Model):
     platform_name = models.CharField(max_length=256)
@@ -145,8 +148,12 @@ class StudyDay(models.Model):
     subject = models.ForeignKey(Subject, on_delete=models.CASCADE)
     teacher = models.ForeignKey(Person, on_delete=models.CASCADE)
     room = models.ForeignKey(Room, on_delete=models.CASCADE)
-    study_format = models.ForeignKey(StudyFormat, on_delete=models.CASCADE)
+    study_format = models.ForeignKey(StudyFormat, on_delete=models.CASCADE, blank=True, null=True)
     links = models.CharField(max_length=8, blank=True, null=True)
 
     def __str__(self) -> str:
-        return self.day_number
+        return f'{self.DAY_NUMBERS[int(self.day_number)][1]}. Группа {self.study_group}. {self.lesson}'
+
+    @classmethod
+    def get_group_st_days(self, st_group_id: int) -> QueryDict:
+        return StudyDay.objects.filter(study_group=st_group_id).order_by('lesson')

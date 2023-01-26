@@ -1,39 +1,16 @@
 <template>
     <div class="schedule-container">
-        <div class="study_day">
+        <div class="study_day" v-for="(study_day, day) in study_days" :key="day">
             <div class="title">
                 <div class="info">
-                    <p>Понедельник</p>
-                    <p>12.12.2023 - 12.12.2023</p>
+                    <p>{{day}}</p>
+                    <p v-if="study_day[0].actual_dates !== null">{{study_day[0].actual_dates}}</p>
                 </div>
             </div>
             <div class="study_day-container">
                 <div class="study_day-lessons">
-                    <lesson-card/>
-                    <lesson-card/>
-                    <lesson-card/>
-                    <lesson-card/>
-                    <lesson-card/>
-                    <lesson-card/>
-                </div>
-            </div>
-        </div>
-
-        <div class="study_day">
-            <div class="title">
-                <div class="info">
-                    <p>Понедельник</p>
-                    <p>12.12.2023 - 12.12.2023</p>
-                </div>
-            </div>
-            <div class="study_day-container">
-                <div class="study_day-lessons">
-                    <lesson-card/>
-                    <lesson-card/>
-                    <lesson-card/>
-                    <lesson-card/>
-                    <lesson-card/>
-                    <lesson-card/>
+                    <lesson-card v-for="lesson of study_day" :key="lesson.id" :lesson_info="lesson"/>
+                    <lesson-card v-for="id in (6-study_day.length)" :key="id" :isEmpty="true"/>
                 </div>
             </div>
         </div>
@@ -43,9 +20,36 @@
 <script>
 import LessonCard from './LessonCard.vue'
 export default {
-  components: {
-    LessonCard
-  }
+    components: {
+        LessonCard
+    },
+    data() {
+        return {
+            study_days: null
+        }
+    },
+    async created() {
+        if (localStorage.getItem('token') == null) {
+            this.$router.push("/login");
+        } else {
+            await this.axios.get('http://localhost:8000/api/st_days/', {
+                'headers': {'Authorization': `Token ${localStorage.getItem('token')}`},
+                'st_group': JSON.parse(localStorage.getItem('user'))['study_group']
+            }).then(response => {
+                this.study_days = {}
+                let tmp = JSON.parse(JSON.stringify(response.data))
+                for (let st_day of tmp){
+                    if (this.study_days.hasOwnProperty(st_day.day_number)){
+                        this.study_days[st_day.day_number].push(st_day)
+                    } else {
+                        this.study_days[st_day.day_number] = [st_day]
+                    }
+                }
+            }).catch(error => {
+                console.error(error.response)
+            })
+        }
+    },
 }
 
 </script>
@@ -53,7 +57,6 @@ export default {
 <style scoped>
 .schedule-container{
     display: grid;
-    grid-template-rows: repeat(2, 1fr);
     gap: 30px;
 }
 

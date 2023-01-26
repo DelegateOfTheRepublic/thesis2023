@@ -17,7 +17,7 @@ export default {
   },
   methods: {
       swithLessonComponent: function() {
-          if (this.currentLessonComponent == AddLesson){
+          if (this.currentLessonComponent === AddLesson){
               this.currentLessonComponent = LessonCreater
           }else{
               this.currentLessonComponent = AddLesson

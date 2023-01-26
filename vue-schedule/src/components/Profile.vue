@@ -19,7 +19,7 @@
                         </g>
                     </svg>
                 </div>
-                <p>Елисей Л. Н.</p>
+                <p>{{fio()}}</p>
             </div>
         </div>
         <div class="profile-info">
@@ -45,7 +45,16 @@
 
 <script>
 export default {
-
+    data() {
+        return {
+            user: localStorage.getItem('user')
+        }
+    },
+    methods: {
+        fio: function(){
+            return `${this.user.first_name} ${this.user.last_name}. ${this.user.middle_name}.`
+        }
+    }
 }
 </script>
 

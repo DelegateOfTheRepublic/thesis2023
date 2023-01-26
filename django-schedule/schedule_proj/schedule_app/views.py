@@ -2,7 +2,8 @@ from typing import List
 from django.http import HttpResponse, JsonResponse, HttpRequest, QueryDict
 from django.views.decorators.csrf import csrf_exempt
 from rest_framework import status
-from rest_framework.authentication import TokenAuthentication
+from rest_framework.authentication import *
+from rest_framework.authtoken.models import Token
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.renderers import JSONRenderer
 from rest_framework.parsers import *
@@ -47,12 +48,20 @@ class PositionApi(APIView):
         serializer = PositionSerializer(SPosition.get_all(), many=True)
         return JsonResponse(serializer.data, safe=False)
 
-class PersonApi(APIView):
+class MyProfileApi(APIView):
     authentication_classes = (TokenAuthentication,)
     permission_classes = (IsAuthenticated,)
     def get(self, request) -> JsonResponse:
+        token = request.headers.get('Authorization').split(' ')[1]
+        user = Person.objects.get(user_id=Token.objects.get(key=token).user_id)
+        if user.role == 'Преподаватель':
+            return JsonResponse({'user': TeacherSerializer(user).data}, safe=False)
+        return JsonResponse({'user': PersonSerializer(user).data}, safe=False)
+
+class PersonApi(APIView):
+    def get(self, request) -> JsonResponse:
         #the code below is temporary
-        
+
         persons = SPerson.get_all()
         teacher_serializer: List[QueryDict] = []
         another_serializer: List[QueryDict] = []
@@ -68,7 +77,7 @@ class PersonApi(APIView):
             if person.role == 'Преподаватель':
                 return JsonResponse(TeacherSerializer(person).data, safe=False)
             return JsonResponse(PersonSerializer(person).data, safe=False)
-        
+
         serializer = teacher_serializer + another_serializer
         return JsonResponse(serializer, safe=False)
 
@@ -88,7 +97,7 @@ class PersonApi(APIView):
             if serializer.is_valid():
                 SPerson.create_person(serializer.validated_data)
                 return JsonResponse({'success': 'person created'})
-        
+
         return JsonResponse({'error': serializer.errors, 'status': status.HTTP_400_BAD_REQUEST})
 
     def patch(self, request, format=None):
@@ -132,10 +141,21 @@ class StudyFormatApi(APIView):
         return JsonResponse(serializer.data, safe=False)
 
 class StudyDayApi(APIView):
-    def get(self, request: HttpRequest) -> JsonResponse:
+    authentication_classes = (TokenAuthentication,)
+    permission_classes = (IsAuthenticated,)
+    def get(self, request) -> JsonResponse:
+        if request.data.get('st_group'):
+            group_st_days = SStudyDay.get_group_st_days(request.data.get('st_group'))
+            tmp = SStudyDay.group_by_days(group_st_days)
+            group_st_days = {}
+            for (_, st_day) in tmp.items():
+                serializer = StudyDaySerializer(st_day, many=True).data
+                group_st_days[serializer[0].get('day_number')] = serializer
+            return JsonResponse(group_st_days, safe=False)
+
         serializer = StudyDaySerializer(SStudyDay.get_all(), many=True)
         return JsonResponse(serializer.data, safe=False)
-    
+
     def post(self, request) -> JsonResponse:
         data = request.data
         if isinstance(data, dict):
@@ -167,5 +187,5 @@ class UploadScheduleTemplatesApi(APIView):
         if templates and len(templates) != 0:
             print(templates)
             return JsonResponse({'success': 'templates created'})
-            
+
         return JsonResponse({'KeyError': 'request data must have `templates` key'})

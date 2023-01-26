@@ -106,6 +106,19 @@ class SStudyDay:
         return StudyDay.objects.all()
 
     @classmethod
+    def group_by_days(self, study_days):
+        st_group_days = {}
+
+        for st_day in study_days:
+            tmp = st_group_days.get(st_day.day_number, st_group_days)
+            if isinstance(tmp, dict):
+                tmp[st_day.day_number] = [st_day]
+            else:
+                tmp.append(st_day)
+
+        return st_group_days
+
+    @classmethod
     def create_study_days(self, validate_data) -> None:
 
         for i in range(len(validate_data)):
@@ -117,6 +130,9 @@ class SStudyDay:
             validate_data[i]['teacher'] = Person.objects.get(pk=validate_data[i]['teacher'])
 
         return StudyDay.objects.bulk_create([StudyDay(**item) for item in validate_data])
+
+    def get_group_st_days(st_group_id:int) -> Iterable[StudyDay]:
+        return StudyDay.get_group_st_days(st_group_id)
 
 
 class SSubject:

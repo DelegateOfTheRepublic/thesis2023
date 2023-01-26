@@ -86,7 +86,7 @@ watch: {
                 this.isTopWeek = false
             }
         },
-        endDate: function() {
+        endDate: function () {
             if (new Date(this.endDate) < new Date(this.startDate)){
                 this.endDate = this.startDate
             }

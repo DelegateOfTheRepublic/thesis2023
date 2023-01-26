@@ -1,7 +1,7 @@
 from django.urls import include, re_path
 from rest_framework.authtoken.views import obtain_auth_token
 from .views import CourseApi, DepartmentApi, DepartmentBoardApi, \
-                   LessonApi, LinkApi, PersonApi, PositionApi, \
+                   LessonApi, LinkApi, MyProfileApi, PersonApi, PositionApi, \
                    RoleApi, RoomApi, RoomTypeApi, SpecializationApi, \
                    StudyDayApi, StudyFormatApi, StudyGroupApi, StudyLevelApi, SubjectApi, UploadScheduleTemplatesApi
 
@@ -20,6 +20,8 @@ urlpatterns = [
     re_path(r'^positions/$', PositionApi.as_view()),
 
     re_path(r'^persons/$', PersonApi.as_view()),
+
+    re_path(r'^profile/$', MyProfileApi.as_view()),
 
     re_path(r'^roles/$', RoleApi.as_view()),
     re_path(r'^room_types/$', RoomTypeApi.as_view()),
