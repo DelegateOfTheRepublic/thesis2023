@@ -33,10 +33,10 @@ export default {
     async login(e) {
       e.preventDefault()
       if (this.password.length >= 8) {
-        await this.axios.post('http://localhost:8000/api/auth/token/login', {
+        this.axios.post('http://localhost:8000/api/auth/token/login', {
           'username': this.email,
           'password': this.password
-        }).then(response => {
+        }).then(async response => {
           this.setToken(response.data.auth_token)
           this.getUserProfile()
           this.$router.push("/schedule")

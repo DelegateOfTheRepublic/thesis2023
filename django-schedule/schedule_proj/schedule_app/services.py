@@ -21,6 +21,10 @@ class SLesson:
     def get_all(self) -> Iterable[Lesson]:
         return Lesson.objects.all()
 
+    @classmethod
+    def get_by_times(self, start_time: str, end_time:str) -> Lesson:
+        return Lesson.objects.get(start_time=start_time, end_time=end_time)
+
 class SLink:
     @classmethod
     def get_all(self) -> Iterable[Link]:
@@ -41,6 +45,10 @@ class SPerson:
     @classmethod
     def get_person_by_id(self, id: int) -> Person:
         return Person.objects.get(pk=id)
+
+    @classmethod
+    def get_teachers(self) -> Iterable[Person]:
+        return Person.objects.filter(role__name='Преподаватель')
 
     @classmethod
     def create_teacher(self, validated_data):
@@ -95,6 +103,19 @@ class SStudyGroup:
     def get_all(self) -> Iterable[StudyGroup]:
         return StudyGroup.objects.all()
 
+    def get_groups_by(specialization, course):
+        tmp = Person.objects.values('study_group_id').filter(specialization=specialization, study_group__course=course)
+        res = []
+
+        for st_group in tmp:
+            res.append(StudyGroup.objects.get(id=st_group.get('study_group_id')))
+
+        return res
+
+    @classmethod
+    def get_by_name(self, study_group_name) -> int:
+        return StudyGroup.objects.get(name=study_group_name).id
+
 class SStudyFormat:
     @classmethod
     def get_all(self) -> Iterable[StudyFormat]:
@@ -123,7 +144,8 @@ class SStudyDay:
 
         for i in range(len(validate_data)):
             validate_data[i]['study_group'] = StudyGroup.objects.get(pk=validate_data[i]['study_group'])
-            validate_data[i]['study_format'] = StudyFormat.objects.get(pk=validate_data[i]['study_format'])
+            if validate_data[i]['study_format'] != None:
+                validate_data[i]['study_format'] = StudyFormat.objects.get(pk=validate_data[i]['study_format'])
             validate_data[i]['subject'] = Subject.objects.get(pk=validate_data[i]['subject'])
             validate_data[i]['lesson'] = Lesson.objects.get(pk=validate_data[i]['lesson'])
             validate_data[i]['room'] = Room.objects.get(pk=validate_data[i]['room'])
@@ -131,9 +153,12 @@ class SStudyDay:
 
         return StudyDay.objects.bulk_create([StudyDay(**item) for item in validate_data])
 
-    def get_group_st_days(st_group_id:int) -> Iterable[StudyDay]:
-        return StudyDay.get_group_st_days(st_group_id)
+    def get_group_st_days(st_group_name:str, specialization:str = None, course:str=None) -> Iterable[StudyDay]:
+        return StudyDay.get_group_st_days(st_group_name, specialization, course)
 
+    @classmethod
+    def get_day_number_by_name(self, day_name:str) -> int:
+        return [day[0] for day in StudyDay.DAY_NUMBERS if day[1] == day_name][0]
 
 class SSubject:
     @classmethod

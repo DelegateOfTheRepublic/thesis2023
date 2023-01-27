@@ -1,5 +1,5 @@
 <template>
-    <component :is="currentLessonComponent" @click="swithLessonComponent"/>
+    <component :submitCreateStDay='submitCreateStDay' :is="currentLessonComponent" @click="swithLessonComponent"/>
 </template>
 
 <script>
@@ -10,6 +10,7 @@ export default {
         LessonCreater,
         AddLesson,
   },
+  props: ['submitCreateStDay'],
   data() {
       return {
           currentLessonComponent: AddLesson

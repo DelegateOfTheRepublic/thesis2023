@@ -93,10 +93,11 @@ class PersonSerializer(serializers.ModelSerializer):
     last_login = serializers.CharField(source='user.last_login', required=False)
     date_joined = serializers.DateTimeField(source='user.date_joined')
     role = serializers.CharField(source='role.name')
-    study_group = serializers.CharField(source='study_group.name')
+    study_group = serializers.CharField(source='study_group.name',required=False)
+    specialization = serializers.CharField(source='specialization.name', required=False)
     class Meta:
         model = Person
-        fields = ['id', 'first_name', 'last_name', 'middle_name',
+        fields = ['id', 'first_name', 'last_name', 'middle_name', 'specialization',
                   'phone', 'email', 'show_conts', 'role', 'study_group',
                   'avatar', 'last_login', 'date_joined']
 
@@ -114,7 +115,7 @@ class StudyDaySerializer(serializers.ModelSerializer):
     subject = serializers.CharField()
     teacher = serializers.CharField()
     room = serializers.CharField()
-    study_format = serializers.CharField()
+    study_format = serializers.CharField(required=False)
     day_number = serializers.CharField(source="get_day_number_display")
 
     class Meta:

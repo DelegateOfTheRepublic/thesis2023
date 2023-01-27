@@ -1,3 +1,4 @@
+from ast import Or
 from typing import Dict
 from django.db import models
 from django.contrib.auth.models import User
@@ -103,6 +104,7 @@ class Person(models.Model):
     study_group = models.ForeignKey(StudyGroup, on_delete=models.SET_NULL, null=True, blank=True)
     role = models.ForeignKey(Role, on_delete=models.SET_NULL, null=True)
     position = models.ForeignKey(Position, on_delete=models.SET_NULL, blank=True, null=True)
+    specialization = models.ForeignKey(Specialization, on_delete=models.SET_NULL, blank=True, null=True)
 
     def __str__(self) -> str:
         return f'{self.last_name} {self.first_name[0]}. {self.middle_name[0]}.'
@@ -155,5 +157,10 @@ class StudyDay(models.Model):
         return f'{self.DAY_NUMBERS[int(self.day_number)][1]}. Группа {self.study_group}. {self.lesson}'
 
     @classmethod
-    def get_group_st_days(self, st_group_id: int) -> QueryDict:
-        return StudyDay.objects.filter(study_group=st_group_id).order_by('lesson')
+    def get_group_st_days(self, st_group_name: str, specialization:str=None, course:str=None) -> QueryDict:
+        print('annda, ', st_group_name)
+        if specialization and course:
+            st_group_id = Person.objects.values('study_group__id').filter(specialization=specialization, study_group__course_id=course, study_group=st_group_name).first()
+            st_group_id = st_group_id.get('study_group__id') if st_group_id else None
+            return StudyDay.objects.filter(study_group__id=st_group_id,).order_by('lesson')
+        return StudyDay.objects.filter(study_group=st_group_name).order_by('lesson') or StudyDay.objects.filter(study_group__name=st_group_name).order_by('lesson')

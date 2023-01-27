@@ -1,14 +1,11 @@
 from typing import List
-from django.http import HttpResponse, JsonResponse, HttpRequest, QueryDict
-from django.views.decorators.csrf import csrf_exempt
+from django.http import JsonResponse, HttpRequest, QueryDict
 from rest_framework import status
 from rest_framework.authentication import *
 from rest_framework.authtoken.models import Token
 from rest_framework.permissions import IsAuthenticated
-from rest_framework.renderers import JSONRenderer
 from rest_framework.parsers import *
 from rest_framework.views import APIView
-from rest_framework.request import Request
 from .serializers import *
 from .services import *
 
@@ -57,6 +54,12 @@ class MyProfileApi(APIView):
         if user.role == 'Преподаватель':
             return JsonResponse({'user': TeacherSerializer(user).data}, safe=False)
         return JsonResponse({'user': PersonSerializer(user).data}, safe=False)
+
+class TeacherApi(APIView):
+    authentication_classes = (TokenAuthentication,)
+    permission_classes = (IsAuthenticated,)
+    def get(self, request) -> JsonResponse:
+        return JsonResponse(TeacherSerializer(SPerson.get_teachers(), many=True).data, safe=False)
 
 class PersonApi(APIView):
     def get(self, request) -> JsonResponse:
@@ -131,7 +134,7 @@ class StudyLevelApi(APIView):
         return JsonResponse(serializer.data, safe=False)
 
 class StudyGroupApi(APIView):
-    def get(self, request: HttpRequest) -> JsonResponse:
+    def get(self, request) -> JsonResponse:
         serializer = StudyGroupSerializer(SStudyGroup.get_all(), many=True)
         return JsonResponse(serializer.data, safe=False)
 
@@ -144,22 +147,43 @@ class StudyDayApi(APIView):
     authentication_classes = (TokenAuthentication,)
     permission_classes = (IsAuthenticated,)
     def get(self, request) -> JsonResponse:
-        if request.data.get('st_group'):
-            group_st_days = SStudyDay.get_group_st_days(request.data.get('st_group'))
-            tmp = SStudyDay.group_by_days(group_st_days)
-            group_st_days = {}
-            for (_, st_day) in tmp.items():
-                serializer = StudyDaySerializer(st_day, many=True).data
-                group_st_days[serializer[0].get('day_number')] = serializer
-            return JsonResponse(group_st_days, safe=False)
+        if request.GET.get('st_group'):
+            group_st_days = SStudyDay.get_group_st_days(request.GET.get('st_group'), request.GET.get('specialization'), request.GET.get('course'))
+            print('asd ', group_st_days)
+            if group_st_days:
+                tmp = SStudyDay.group_by_days(group_st_days)
+                group_st_days = {}
+                for (_, st_day) in tmp.items():
+                    serializer = StudyDaySerializer(st_day, many=True).data
+                    group_st_days[serializer[0].get('day_number')] = serializer
+                return JsonResponse(group_st_days, safe=False)
+            else:
+                return JsonResponse({'error': 'No records'})
 
         serializer = StudyDaySerializer(SStudyDay.get_all(), many=True)
         return JsonResponse(serializer.data, safe=False)
 
     def post(self, request) -> JsonResponse:
         data = request.data
+
         if isinstance(data, dict):
-            data = [data]
+            if len(data.keys()) == 0:
+                data = [data]
+            else:
+                new_data = []
+                for (day_name, st_days) in data.items():
+                    for st_day in st_days:
+                        st_day['lesson'] = SLesson.get_by_times(st_day.pop('start_time'), st_day.pop('end_time')).id
+                        st_day['day_number'] = SStudyDay.get_day_number_by_name(day_name)
+                        st_day['study_group'] = SStudyGroup.get_by_name(st_day['study_group'])
+                        new_data.append(st_day)
+
+                serializer = StudyDaySerializer(data=new_data, many=True, partial=True)
+
+                if serializer.is_valid():
+                    print('success')
+                    SStudyDay.create_study_days(serializer.validated_data)
+                    return JsonResponse({'success': 'study days created'})
 
         serializer = StudyDaySerializer(data=data, many=True)
 

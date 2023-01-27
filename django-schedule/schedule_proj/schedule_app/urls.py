@@ -3,7 +3,7 @@ from rest_framework.authtoken.views import obtain_auth_token
 from .views import CourseApi, DepartmentApi, DepartmentBoardApi, \
                    LessonApi, LinkApi, MyProfileApi, PersonApi, PositionApi, \
                    RoleApi, RoomApi, RoomTypeApi, SpecializationApi, \
-                   StudyDayApi, StudyFormatApi, StudyGroupApi, StudyLevelApi, SubjectApi, UploadScheduleTemplatesApi
+                   StudyDayApi, StudyFormatApi, StudyGroupApi, StudyLevelApi, SubjectApi, TeacherApi, UploadScheduleTemplatesApi
 
 urlpatterns = [
     re_path(r'^auth/', include('djoser.urls')),
@@ -20,6 +20,7 @@ urlpatterns = [
     re_path(r'^positions/$', PositionApi.as_view()),
 
     re_path(r'^persons/$', PersonApi.as_view()),
+    re_path(r'^teachers/$', TeacherApi.as_view()),
 
     re_path(r'^profile/$', MyProfileApi.as_view()),
 

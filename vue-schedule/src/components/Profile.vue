@@ -2,8 +2,8 @@
     <div class="profile">
         <div class="wrapper">
             <div class="profile-title">
-                <div class="avatar">
-                    <svg xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svgjs="http://svgjs.com/svgjs" width="50" height="50" x="0" y="0" viewBox="0 0 682.667 682.667" style="enable-background:new 0 0 512 512" xml:space="preserve" class="">
+                <div class="profile-img">
+                    <svg xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svgjs="http://svgjs.com/svgjs" width="30" height="30" x="0" y="0" viewBox="0 0 682.667 682.667" style="enable-background:new 0 0 512 512" xml:space="preserve" class="">
                         <g>
                             <defs>
                                 <clipPath id="a" clipPathUnits="userSpaceOnUse">
@@ -19,23 +19,30 @@
                         </g>
                     </svg>
                 </div>
+                <div>
+                    <img class="avatar" :src="user.avatar" alt="">
+                </div>
                 <p>{{fio()}}</p>
             </div>
         </div>
         <div class="profile-info">
+            <div v-if="user.role == 'Студент'">
+                <label for="">Группа:</label>
+                <p>{{user.study_group}}</p>
+            </div>
             <div class="fio">
                 <label for="">Статус:</label>
-                <p>Студент</p>
+                <p>{{user.role}}</p>
             </div>
             <div>
                 <label for="">Номер телефона:</label>
-                <p>+78889997654</p>
+                <p>{{user.phone}}</p>
             </div>
-            <div>
+            <div v-if="user.email">
                 <label for="">Email:</label>
-                <p>myemail@mail.ru</p>
+                <p>{{user.email}}</p>
             </div>
-            <div>
+            <div v-if="user.role == 'Преподаватель'">
                 <label for="">Должность:</label>
                 <p>Доцент</p>
             </div>
@@ -47,8 +54,11 @@
 export default {
     data() {
         return {
-            user: localStorage.getItem('user')
+            user: null
         }
+    },
+    created() {
+        this.user = JSON.parse(localStorage.getItem('user'))
     },
     methods: {
         fio: function(){
@@ -70,13 +80,25 @@ export default {
     box-shadow: 4px 4px 10px 0px rgba(34, 60, 80, 0.2);
 }
 
+.profile-img{
+    position: absolute;
+    left: 5px;
+    top: 5px;
+}
+
+.avatar{
+    width: 50px;
+    height: 50px;
+}
+
 .wrapper{
+    position: relative;
     padding: 15px;
     border-bottom: 2px solid gainsboro;
 }
 
 .profile-title{
-    width: 55%;
+    width: 65%;
     display: flex;
     justify-content: space-between;
     align-items: center;
