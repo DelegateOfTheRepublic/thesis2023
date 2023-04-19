@@ -24,7 +24,7 @@
 
 <script>
 export default {
-    props: ['lesson_info', 'isEmpty'],
+    props: ['lesson_info'],
     methods: {
         getNormDate(date) {
             let newDate = date.split('-')

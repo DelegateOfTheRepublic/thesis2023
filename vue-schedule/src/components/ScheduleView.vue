@@ -1,51 +1,45 @@
 <template>
-    <div class="schedule-container">
-        <div class="group_picker" v-if="checkStaffRole()">
-            <div>
-                <label for="">Направление/специальность: </label>
-                <select name="" id="" v-model="specialization">
-                    <option selected disabled value>Выберите...</option>
-                    <option v-for="spec of specializations" :key="spec.id" :value="spec.id">{{spec.name}}</option>
-                </select>
+    <div class="schedule-view">
+        <aside class="schedule-view__left">
+            <week-types/>
+            <floors/>
+        </aside>
+        <div class="schedule-view__middle">
+            <div class="schedule-view__middle-head">
+                <group-search/>
+                <weeks/>
+                <teacher-search/>
             </div>
-            <div>
-                <label for="">Курс: </label>
-                <select name="" id="" v-model="course">
-                    <option selected disabled value>Выберите...</option>
-                    <option v-for="course of courses" :key="course.id" :value="course.id">{{course.number}}</option>
-                </select>
-            </div>
-            <div>
-                <label for="">Группа: </label>
-                <select name="" id="" v-model="study_group">
-                    <option selected disabled value>Выберите...</option>
-                    <option v-for="group of study_groups" :key="group.id" :value="group.id">{{group.name}}</option>
-                </select>
-            </div>
-            <button @click="getSchedule(study_group)" type="submit">Получить расписание</button>
-        </div>
-        <div class="study_day" v-for="(study_day, day) in study_days" :key="day">
-            <div class="title">
-                <div class="info">
-                    <p>{{day}}</p>
-                    <p v-if="study_day[0].actual_dates !== null">{{study_day[0].actual_dates}}</p>
-                </div>
-            </div>
-            <div class="study_day-container">
-                <div class="study_day-lessons">
-                    <lesson-card v-for="lesson of study_day" :key="lesson.id" :lesson_info="lesson"/>
-                    <lesson-card v-for="id in (6-study_day.length)" :key="id" :isEmpty="true"/>
-                </div>
+            <div class="schedule-view__middle-lessons">
+                <lesson-card v-for="i in 6" :key="i"/>
             </div>
         </div>
+        <aside class="schedule-view__right">
+            <exams/>
+        </aside>
     </div>
 </template>
 
 <script>
-import LessonCard from './LessonCard.vue'
+import LessonCard from './Schedule View/LessonComponents/LessonCard.vue'
+import DayWeek from './DayWeek.vue';
+import GroupSearch from './Schedule View/GroupSearch.vue';
+import Weeks from './Schedule View/Weeks.vue';
+import WeekTypes from './WeekTypes.vue';
+import Floors from './Schedule View/Floors.vue';
+import Exams from './Schedule View/Exams.vue';
+import TeacherSearch from './Schedule View/TeacherSearch.vue';
+
 export default {
     components: {
-        LessonCard
+        LessonCard,
+        DayWeek,
+        GroupSearch,
+        Weeks,
+        WeekTypes,
+        Floors,
+        Exams,
+        TeacherSearch
     },
     data() {
         return {
@@ -75,8 +69,10 @@ export default {
         checkStaffRole() {
             return JSON.parse(localStorage.getItem('user'))['role'] !== 'Студент'
         },
+        isAdmin() {
+            return JSON.parse(localStorage.getItem('user'))['role'] == 'Администратор'
+        },
         async getSchedule(st_group) {
-            console.log(st_group)
             await this.axios.get('http://localhost:8000/api/st_days/', {
                 'headers': {'Authorization': `Token ${localStorage.getItem('token')}`},
                 'params': {
@@ -133,6 +129,10 @@ export default {
             }).catch(error => {
                 console.error(error.response)
             })
+        },
+        setSchedule() {
+            localStorage.setItem('schedule', JSON.stringify(this.study_days))
+            this.$router.push('/create_schedule')
         }
     }
 }
@@ -140,55 +140,44 @@ export default {
 </script>
 
 <style scoped>
-.schedule-container{
-    width: 90%;
-    display: grid;
-    gap: 30px;
-}
-
-.group_picker{
-    width: 65%;
+.schedule-view {
     display: flex;
-    justify-content: space-between;
-    border: 1px solid rgb(238, 238, 238);
-    border-radius: 10px;
-    box-shadow: 4px 4px 10px 0px rgba(34, 60, 80, 0.2);
-    padding: 10px;
+    flex: 1;
 }
-
-.study_day-container{
-    border: 1px solid rgb(238, 238, 238);
-    border-radius: 10px;
-    box-shadow: 4px 4px 10px 0px rgba(34, 60, 80, 0.2);
-    padding: 15px;
+.schedule-view__left {
+    flex: 1;
+    background-color: aquamarine;
 }
-
-.study_day-lessons{
-    display: grid;
-    grid-template-columns: repeat(6, 1fr);
-    gap: 30px;
+.schedule-view__middle {
+    width: 1180px;
+    background-color: beige;
 }
-
-.title{
-    margin-bottom: 20px;
+.schedule-view__right {
+    flex: 1;
+    background-color: aquamarine;
 }
-
-.info{
+.schedule-view__left,
+.schedule-view__right {
     display: flex;
+    flex-direction: column;
+    gap: 12px;
+    align-items: center;
+}
+.schedule-view__middle-head {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    align-items: center;
+}
+.schedule-view__middle-lessons {
+    display: flex;
+    flex-wrap: wrap;
     justify-content: space-between;
-    width: 23%;
+    row-gap: 30px;
+    margin-top: 40px;
 }
-
-.info>p{
-    border: 1px solid rgb(238, 238, 238);
-    border-radius: 10px;
-    box-shadow: 4px 4px 10px 0px rgba(34, 60, 80, 0.2);
-}
-
-p{
-    margin: 0px;
-    padding: 5px;
-    padding-left: 8px;
-    padding-right: 8px;
+.schedule-view__left,
+.schedule-view__middle,
+.schedule-view__right {
+    padding-top: 25px;
 }
 </style>

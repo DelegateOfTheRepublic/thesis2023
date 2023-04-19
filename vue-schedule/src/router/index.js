@@ -4,7 +4,6 @@ import LoginForm from '@/components/LoginForm'
 import ScheduleView from '@/components/ScheduleView'
 import CreateSchedule from '@/components/CreateSchedule'
 import Profile from '@/components/Profile'
-import Home from '@/components/Home'
 
 Vue.use(Router)
 
@@ -43,14 +42,6 @@ const router = new Router({
       meta: {
         requiresAuth: true
       },
-    },
-    {
-      path: '/home',
-      name: 'home',
-      component: Home,
-      meta: {
-        requiresAuth: true
-      }
     }
   ]
 })

@@ -124,6 +124,7 @@ data() {
         }
     },
     created() {
+        this.checkSchedule()
         this.getSubjects()
         this.getTeachers()
         this.getRooms()
@@ -146,6 +147,12 @@ watch: {
         }
     },
     methods: {
+        checkSchedule() {
+            console.log(localStorage.getItem('schedule'))
+            if (localStorage.getItem('schedule') !== null){
+                console.log('asd')
+            }
+        },
         async getSubjects() {
             this.subjects = {}
             await this.axios.get('http://localhost:8000/api/subjects/', {

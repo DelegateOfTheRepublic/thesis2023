@@ -1,88 +1,54 @@
 <template>
-    <div class="schedule-wrapper">
-        <div class="schedule-explorer shadow">
-            <div>
-                <label for="">День недели:</label>
-                <select name="" id="" v-model="day">
-                    <option selected disabled value>Выберите...</option>
-                    <option value="Понедельник">Понедельник</option>
-                    <option value="Вторник">Вторник</option>
-                    <option value="Среда">Среда</option>
-                    <option value="Четверг">Четверг</option>
-                    <option value="Пятница">Пятница</option>
-                    <option value="Суббота">Суббота</option>
-                </select>
-            </div>
-            <div class="specialization">
-                <label for="">Напр.-е/спец.-ть:</label>
-                <select name="" id="" v-model="specialization">
-                    <option selected disabled value>Выберите...</option>
-                    <option v-for="spec of specializations" :key="spec.id" :value="spec.short_name">{{spec.name}}</option>
-                </select>
-            </div>
-            <div>
-                <label for="">Курс:</label>
-                <select name="" id="" v-model="course">
-                    <option selected disabled value>Выберите...</option>
-                    <option v-for="course of courses" :key="course.id" :value="course.number">{{course.number}}</option>
-                </select>
-            </div>
-            <div>
-                <label for="">Группа:</label>
-                <select name="" id="" v-model="study_group">
-                    <option selected disabled value>Выберите...</option>
-                    <option v-for="group of study_groups" :key="group.id" :value="group.name">{{group.name}}</option>
-                </select>
-            </div>
-        </div>
-        <div class="schedule-workspace shadow">
-            <div class="schedule-menu">
-                <div class="study-day">
-                    <p v-if="day">{{day}}</p>
-                    <p v-else>Выберите день</p>
-                </div>
-                <div class="study-group-info">
-                    <div>
-                        <p v-if="study_group">Группа: {{study_group}}</p>
-                        <p v-else>Выберите группу</p>
-                    </div>
-                    <div>
-                        <p v-if="specialization">Напр.-е/спец.-ть: {{specialization}}</p>
-                        <p v-else>Выберите напр.-е/спец.-ть</p>
-                    </div>
-                    <div>
-                        <p v-if="course">Курс: {{course}}</p>
-                        <p v-else>Выберите курс</p>
-                    </div>
-                </div>
-                <div class="save-btn" @click="saveSchedule()">
-                    <p>Сохранить</p>
-                </div>
-            </div>
-            <div class="workspace-wrapper">
-                <lesson-placeholder :submitCreateStDay="submitCreateStDay"/>
-                <lesson-placeholder :submitCreateStDay="submitCreateStDay"/>
-                <lesson-placeholder :submitCreateStDay="submitCreateStDay"/>
-                <lesson-placeholder :submitCreateStDay="submitCreateStDay"/>
-                <lesson-placeholder :submitCreateStDay="submitCreateStDay"/>
-                <lesson-placeholder :submitCreateStDay="submitCreateStDay"/>
-            </div>
-        </div>
-        <div class="schedule-templates shadow">
-
-        </div>
-    </div>
+    <!-- <view-lesson-card/> -->
+    <!-- <edit-lesson-card/> -->
+    <!-- <tool-bar/> -->
+    <!-- <templates-explorer/> -->
+    <!-- <child-items/> -->
+    <!-- <tabs/> -->
+    <!-- <new-schedule/> -->
+    <!-- <to-duplicate/> -->
+    <!-- <overlap-info/> -->
+    <!-- <small-template/> -->
+    <!-- <lesson-split/> -->
+    <!-- <add-group/> -->
+    <add-conference/>
 </template>
 
 <script>
+import AddConference from './CreateSchedule/AddConference.vue'
+import AddGroup from './CreateSchedule/AddGroup.vue'
+import ChildItems from './CreateSchedule/ChildItems.vue'
+import EditLessonCard from './CreateSchedule/EditLessonCard.vue'
+import LessonSplit from './CreateSchedule/LessonSplit.vue'
+import NewSchedule from './CreateSchedule/NewSchedule.vue'
+import OverlapInfo from './CreateSchedule/OverlapInfo.vue'
+import SmallTemplate from './CreateSchedule/SmallTemplate.vue'
+import Tabs from './CreateSchedule/Tabs.vue'
+import TemplatesExplorer from './CreateSchedule/TemplatesExplorer.vue'
+import ToDuplicate from './CreateSchedule/ToDuplicate.vue'
+import ToolBar from './CreateSchedule/ToolBar.vue'
+import ViewLessonCard from './CreateSchedule/ViewLessonCard.vue'
 import LessonPlaceholder from './LessonPlaceholder.vue'
 
 export default {
   components: {
         LessonPlaceholder,
+        ViewLessonCard,
+        EditLessonCard,
+        ToolBar,
+        TemplatesExplorer,
+        ChildItems,
+        Tabs,
+        NewSchedule,
+        ToDuplicate,
+        OverlapInfo,
+        SmallTemplate,
+        LessonSplit,
+        AddGroup,
+        AddConference,
   },
   data() {
-      return {
+    return {
             courses: null,
             study_groups: null,
             specializations: null,

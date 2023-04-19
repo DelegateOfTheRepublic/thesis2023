@@ -63,7 +63,6 @@ class TeacherApi(APIView):
 
 class PersonApi(APIView):
     def get(self, request) -> JsonResponse:
-        #the code below is temporary
 
         persons = SPerson.get_all()
         teacher_serializer: List[QueryDict] = []
@@ -87,12 +86,10 @@ class PersonApi(APIView):
     def post(self, request, format=None) -> JsonResponse:
         parser_classes = [MultiPartParser, FormParser]
         role = request.data.get('role', None)
-        print(request.data)
 
         if role == '2':
             serializer = TeacherSerializer(data=request.data)
             if serializer.is_valid():
-                print('val_data ', serializer.validated_data)
                 SPerson.create_teacher(serializer.validated_data)
                 return JsonResponse({'success': 'teacher created'})
         else:
@@ -149,7 +146,6 @@ class StudyDayApi(APIView):
     def get(self, request) -> JsonResponse:
         if request.GET.get('st_group'):
             group_st_days = SStudyDay.get_group_st_days(request.GET.get('st_group'), request.GET.get('specialization'), request.GET.get('course'))
-            print('asd ', group_st_days)
             if group_st_days:
                 tmp = SStudyDay.group_by_days(group_st_days)
                 group_st_days = {}
@@ -165,7 +161,7 @@ class StudyDayApi(APIView):
 
     def post(self, request) -> JsonResponse:
         data = request.data
-
+        print(data)
         if isinstance(data, dict):
             if len(data.keys()) == 0:
                 data = [data]
@@ -177,7 +173,6 @@ class StudyDayApi(APIView):
                         st_day['day_number'] = SStudyDay.get_day_number_by_name(day_name)
                         st_day['study_group'] = SStudyGroup.get_by_name(st_day['study_group'])
                         new_data.append(st_day)
-
                 serializer = StudyDaySerializer(data=new_data, many=True, partial=True)
 
                 if serializer.is_valid():

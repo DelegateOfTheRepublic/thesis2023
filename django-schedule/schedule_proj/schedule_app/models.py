@@ -1,5 +1,3 @@
-from ast import Or
-from typing import Dict
 from django.db import models
 from django.contrib.auth.models import User
 from django.core.validators import FileExtensionValidator
@@ -158,7 +156,6 @@ class StudyDay(models.Model):
 
     @classmethod
     def get_group_st_days(self, st_group_name: str, specialization:str=None, course:str=None) -> QueryDict:
-        print('annda, ', st_group_name)
         if specialization and course:
             st_group_id = Person.objects.values('study_group__id').filter(specialization=specialization, study_group__course_id=course, study_group=st_group_name).first()
             st_group_id = st_group_id.get('study_group__id') if st_group_id else None

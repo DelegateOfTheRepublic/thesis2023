@@ -1,5 +1,4 @@
 from django.urls import include, re_path
-from rest_framework.authtoken.views import obtain_auth_token
 from .views import CourseApi, DepartmentApi, DepartmentBoardApi, \
                    LessonApi, LinkApi, MyProfileApi, PersonApi, PositionApi, \
                    RoleApi, RoomApi, RoomTypeApi, SpecializationApi, \

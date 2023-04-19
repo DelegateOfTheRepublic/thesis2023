@@ -1,0 +1,77 @@
+.lesson {
+    width: 360px;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    background-color: bisque;
+}
+
+.lesson__title {
+    display: flex;
+    justify-content: space-between;
+}
+
+
+.lesson__content {
+    display: grid;
+    grid-template-columns: auto 50px;
+    justify-items: center;
+    column-gap: 20px;
+    row-gap: 5px;
+}
+
+.lesson__info {
+    display: flex;
+    flex-direction: column;
+    justify-self: stretch;
+    gap: 10px;
+    padding: 10px 5px 10px 5px;
+    background-color: cadetblue;
+}
+
+.subject{
+    max-height: 50px;
+    word-break: break-all;
+    overflow-y: auto;
+}
+
+.lesson__location,
+.lesson__dates,
+.lesson__teacher {
+    display: flex;
+    gap: 5px;
+}
+
+.lesson__dates {
+
+}
+
+.lesson__teacher {
+    align-items: center;
+}
+
+.lesson__statuses{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    gap: 10px;
+    background-color: cadetblue;
+}
+
+.lesson__type{
+    align-self: center;
+}
+
+.lesson__time_bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.time_bar__progress{
+    width: 80%;
+    height: 10px;
+    background-color: rgb(187, 187, 187);
+}

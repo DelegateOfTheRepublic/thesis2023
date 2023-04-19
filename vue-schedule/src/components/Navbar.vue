@@ -1,80 +1,180 @@
 <template>
-    <header class="navbar">
-        <div>
-            <p>ScheduleApp</p>
-        </div>
-        <div class="nav">
-            <div class="navbar__items">
-                <router-link to="/schedule">Расписание</router-link>
-                <router-link to="/create_schedule">Создать расписание</router-link>
-                <router-link to="/profile">Личный кабинет</router-link>
-                <div class="exit" @click="logout">
-                    <svg xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svgjs="http://svgjs.com/svgjs" width="25" height="25" x="0" y="0" viewBox="0 0 512.016 512" style="enable-background:new 0 0 512 512" xml:space="preserve" class="">
-                        <title>Выйти из системы</title>
-                        <g>
-                            <path d="M496 240.008H293.332c-8.832 0-16-7.168-16-16s7.168-16 16-16H496c8.832 0 16 7.168 16 16s-7.168 16-16 16zm0 0" fill="#000000" data-original="#000000" class=""></path>
-                            <path d="M416 320.008a15.89 15.89 0 0 1-11.309-4.692c-6.25-6.253-6.25-16.386 0-22.636l68.696-68.692-68.696-68.695c-6.25-6.25-6.25-16.383 0-22.633 6.254-6.254 16.387-6.254 22.637 0l80 80c6.25 6.25 6.25 16.383 0 22.633l-80 80A15.896 15.896 0 0 1 416 320.008zM170.668 512.008c-4.566 0-8.898-.64-13.227-1.985L29.055 467.25C11.585 461.148 0 444.871 0 426.676v-384C0 19.145 19.137.008 42.668.008c4.562 0 8.895.64 13.227 1.984l128.382 42.774c17.473 6.101 29.055 22.379 29.055 40.574v384c0 23.531-19.133 42.668-42.664 42.668zm-128-480c-5.867 0-10.668 4.8-10.668 10.668v384c0 4.543 3.05 8.765 7.402 10.281l127.785 42.582c.918.297 2.114.469 3.481.469 5.867 0 10.664-4.801 10.664-10.668v-384c0-4.543-3.05-8.766-7.402-10.281L46.145 32.477c-.918-.297-2.114-.47-3.477-.47zm0 0" fill="#000000" data-original="#000000" class=""></path>
-                            <path d="M325.332 170.676c-8.832 0-16-7.168-16-16v-96c0-14.7-11.965-26.668-26.664-26.668h-240c-8.832 0-16-7.168-16-16s7.168-16 16-16h240c32.363 0 58.664 26.305 58.664 58.668v96c0 8.832-7.168 16-16 16zM282.668 448.008h-85.336c-8.832 0-16-7.168-16-16s7.168-16 16-16h85.336c14.7 0 26.664-11.969 26.664-26.668v-96c0-8.832 7.168-16 16-16s16 7.168 16 16v96c0 32.363-26.3 58.668-58.664 58.668zm0 0" fill="#000000" data-original="#000000" class=""></path>
-                        </g>
-                    </svg>
+    <nav>
+        <div class="container menu">
+            <div class="nav__logo"><a href="https://bashedu.ru/" target="_blank">LOGO</a></div>
+            <div class="nav__usefule-resources">
+                <a href="https://sdo.bashedu.ru/login/index.php" target="_blank">перейти в СДО</a>
+                <a href="https://cabinet.bashedu.ru/" target="_blank">перейти в ЛК</a>
+            </div>
+            <div class="nav__navigation">
+                <div class="nav__notifications">
+                    <div class="menu__item--standart">
+                        <v-button :iconName="'icon-bell'" :fontSize="25"/>
+                        <div class="notifications__list drop-menu">
+                            <div class="notification">
+                                <icon icon_name="icon-avatar" font_size="25"/>
+                                <icon icon_name="icon-arrow_right" font_size="12"/>
+                                <span>Студент добавил д/з</span>
+                            </div>
+                            <div class="notification">
+                                <icon icon_name="icon-avatar" font_size="25"/>
+                                <icon icon_name="icon-arrow_right" font_size="12"/>
+                                <span>Студент загрузил файл</span>
+                            </div>
+                            <div class="notification">
+                                <icon icon_name="icon-telegram" font_size="25"/>
+                                <icon icon_name="icon-arrow_right" font_size="12"/>
+                                <span>Загружен новый файл</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="menu__item--standart">
+                        <v-button :iconName="'icon-advert'" :fontSize="25"/>
+                        <div class="adverts__list drop-menu">
+                            <p>Объявление АБС</p>
+                            <p>Объявление АБСССС</p>
+                            <p>Объявление 1</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="nav__list">
+                    <div class="nav__link">
+                        <span>Файлы</span>
+                    </div>
+                    <div class="nav__link">
+                        <span>Просмотр расписания</span>
+                    </div>
+                    <div class="menu__item--standart">
+                        <v-button :iconName="'icon-arrow'" :fontSize="10" :title="'Домашние задания'" :iconPosition="'right'"/>
+                        <div class="drop-menu">
+                            <div class="homeworks__list">
+                                <p>Нейроинформатика</p>
+                                <p>Теория игр и исследование операций</p>
+                            </div>
+                        </div>
+                    </div>
+                    <v-button :iconName="'icon-online_lesson'" :fontSize="15" :title="'Пара А'" :iconPosition="'right'"/>
+                </div>
+            </div>
+            <div class="nav__profile">
+                <icon icon_name="icon-avatar" font_size="40"/>
+                <div class="menu__item--standart">
+                    <v-button :iconName="'icon-arrow'" :fontSize="15" :title="'Антон В.Б.'" :iconPosition="'right'"/>
+                    <div class="drop-menu">
+                        <div class="profile-menu">
+                            <v-button :iconName="'icon-arrow_right'" :fontSize="10" :title="'Личный кабинет'" :iconPosition="'right'"/>
+                            <v-button :iconName="'icon-door'" :fontSize="20" :title="'Выход'"/>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
-    </header>
+    </nav>
 </template>
 
 <script>
+import Icon from './Icon.vue'
+import IconLabel from './IconLabel.vue'
+import VButton from './VButton.vue'
 export default {
-    methods: {
-        logout(e) {
-            e.preventDefault()
-            localStorage.removeItem('token')
-            localStorage.removeItem('user')
-            this.$router.push('/login')
-        }
-    }
+  components: { Icon, VButton, IconLabel },
+
 }
 </script>
 
 <style scoped>
-.navbar{
-    width: 70%;
-    display: flex;
-    padding-left: 15px;
-    padding-right: 15px;
-    justify-content: space-between;
-    align-items: center;
+nav {
+    width: 100%;
+
+    background-color: cadetblue;
+}
+.container {
+    width: 1180px;
+    height: 46px;
     margin: auto;
-    top: 0;
-    left: 0;
-    right: 0;
-    border-bottom: 1px solid rgb(238, 238, 238);
-    border-radius: 10px;
-    box-shadow: 0px 15px 10px -5px rgba(34, 60, 80, 0.2);
-}
-
-.nav{
-    width: 500px;
-}
-
-.navbar__items{
     display: flex;
-    justify-content: space-between;
-}
 
-.navbar__items,
-a:active,
-a:hover,
-a{
-    text-decoration: none;
-    color: rgb(0, 0, 0);
-}
+    align-items: center;
 
-.exit:hover{
-    cursor: pointer;
+    background-color: bisque;
 }
-
-p{
-  pointer-events: none;
+.nav__logo {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 76px;
+    height: 100%;
+    color: white;
+    background-color: black;
+}
+.nav__usefule-resources {
+    display: flex;
+    flex-direction: column;;
+    margin-left: 20px;
+    font-size: 12px;
+    gap: 6px;
+}
+.nav__usefule-resources > a {
+    border-left: 3px solid lime;
+}
+.nav__navigation {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-grow: 1;
+    height: 100%;
+}
+.nav__notifications {
+    display: flex;
+    gap: 8px;
+    margin-right: 12px;
+}
+.notifications__list {
+    min-width: 250px;
+}
+.notification {
+    display: flex;
+    align-items: center;
+    gap: 2px;
+    padding: 5px 0;
+}
+.adverts__list {
+    width: 200px;
+}
+.adverts__list > p {
+    padding: 5px 0;
+}
+.nav__list {
+    display: flex;
+    gap: 14px;
+}
+.nav__select {
+    display: flex;
+    align-items: center;
+}
+.nav__link {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+.nav__profile {
+    display: flex;
+    align-items: center;
+    height: 100%;
+}
+.profile-menu {
+    width: 250px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    transform: translateX(-18%);
+    margin-top: 5px;
+}
+.homeworks__list {
+    width: 240px;
+    word-wrap: break-word;
+}
+.homeworks__list > p {
+    padding: 5px 0;
 }
 </style>

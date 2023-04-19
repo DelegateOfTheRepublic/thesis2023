@@ -5,6 +5,72 @@ body{
     overflow: auto;
 }
 
+ul{
+    margin: 0;
+    padding: 0;
+}
+
+li {
+    list-style-type: none;
+}
+
+p {
+    margin: 0;
+}
+
+.ml-5 {
+    margin-left: 1.25rem /* 20px */;
+}
+
 .lesson-card--empty{
     background-color: rgb(109, 109, 109);
+}
+
+.menu {
+    position: relative;
+}
+
+.menu__item {
+    display: inline-block;
+    position: relative;
+}
+
+.menu__item--standart {
+    position: relative;
+}
+
+.drop-menu{
+    position: absolute;
+    z-index: 999;
+    display: none;
+    padding-top: 10px;
+}
+
+.drop-menu--top{
+    padding-top: 0;
+    padding-bottom: 10px;
+    top: -2.8rem;
+}
+
+.drop-menu--left {
+    padding: 0;
+    left: -9rem;
+    background-color: cornflowerblue;
+}
+
+.drop-menu__item {
+
+}
+
+.menu__item:hover .drop-menu,
+.menu__item--standart:hover .drop-menu {
+    display: block;
+}
+
+.center {
+    margin: auto;
+}
+
+* {
+    box-sizing: border-box;
 }

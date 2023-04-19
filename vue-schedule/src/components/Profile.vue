@@ -62,7 +62,7 @@ export default {
     },
     methods: {
         fio: function(){
-            return `${this.user.first_name} ${this.user.last_name}. ${this.user.middle_name}.`
+            return `${this.user.first_name} ${this.user.last_name[0]}. ${this.user.middle_name[0]}.`
         }
     }
 }
