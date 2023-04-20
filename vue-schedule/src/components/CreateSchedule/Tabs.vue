@@ -13,7 +13,7 @@
             </div>
         </div>
     </div>
-    <div class="menu__item--standart ml-5">
+    <div class="tab-list__item-add menu__item--standart">
         <icon icon_name="icon-add" font_size="12"/>
         <new-schedule class="drop-menu"/>
     </div>
@@ -21,11 +21,13 @@
 </template>
 
 <script>
+import Icon from '../Icon.vue'
 import IconLabel from '../IconLabel.vue'
 import VButton from '../VButton.vue'
 import NewSchedule from './NewSchedule.vue'
+
 export default {
-  components: { IconLabel, VButton, NewSchedule },
+  components: { Icon, IconLabel, VButton, NewSchedule },
     data() {
         return{
             studyGroup: 'ПИ-4ИВТ186А'
@@ -50,5 +52,8 @@ export default {
     display: flex;
     align-items: center;
     gap: 2px;
+}
+.tab-list__item-add {
+    margin-left: auto;
 }
 </style>

@@ -37,12 +37,13 @@
         <icon icon_name="icon-main" font_size="19"></icon>
         <icon icon_name="icon-go_to" font_size="19"/>
         <icon icon_name="icon-unlink" font_size="19"/>
-        <icon icon_name="icon-set_name" font_size="19"/>
+        <icon icon_name="icon-set_main" font_size="19"/>
     </div>
 </div>
 </template>
 
 <script>
+import Icon from '../Icon.vue'
 import IconLabel from '../IconLabel.vue'
 import Slider from '../Slider.vue'
 
@@ -66,6 +67,7 @@ export default {
         }
     },
     components:{
+        Icon,
         Slider,
         IconLabel
     },
@@ -92,10 +94,8 @@ export default {
 </script>
 
 <style scoped>
-p {
-    margin: 0;
-}
 .lesson-card-wrapper {
+    height: fit-content;
     display: flex;
     gap: 12px;
 }

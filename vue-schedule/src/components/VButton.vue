@@ -50,10 +50,6 @@ export default {
     background-color: coral;
 }
 
-.right-icon {
-    flex-direction: row-reverse;
-}
-
 p {
     margin: 0;
     white-space: nowrap;

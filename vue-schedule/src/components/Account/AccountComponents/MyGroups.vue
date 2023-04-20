@@ -5,8 +5,8 @@
             <div class="my-group__list-item" v-for="i in 2" :key="i">
                 <span>{{ groupCourse }}-й курс</span>
                 <div class="my-group__item-wrapper">
-                    <icon-label :icon_name="'icon-group_list'" :font_size="20">{{ studyGroup.variantA }}</icon-label>
-                    <icon-label :icon_name="'icon-group_list'" :font_size="20">{{ studyGroup.variantB }}</icon-label>
+                    <icon-label :icon_name="'icon-group_list'" :font_size="20" iconPosition="right">{{ studyGroup.variantA }}</icon-label>
+                    <icon-label :icon_name="'icon-group_list'" :font_size="20" iconPosition="right">{{ studyGroup.variantB }}</icon-label>
                 </div>
             </div>
         </div>
@@ -34,7 +34,8 @@ export default {
 
 <style scoped>
 .my-groups {
-    background-color: bisque;
+    width: fit-content;
+    background-color: rgb(91, 255, 151);
 }
 .my-groups__list {
     display: flex;

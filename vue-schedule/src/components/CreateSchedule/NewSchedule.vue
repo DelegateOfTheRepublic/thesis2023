@@ -88,10 +88,11 @@ export default {
 
 }
 .new-schedule__selection-info {
-    position: relative;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 .selection-info__btns {
-    position: absolute;
-    right: 0;
+    display: flex;
 }
 </style>

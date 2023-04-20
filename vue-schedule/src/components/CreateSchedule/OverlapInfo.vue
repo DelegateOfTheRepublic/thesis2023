@@ -47,10 +47,12 @@
 </template>
 
 <script>
+import Icon from '../Icon.vue';
 import VButton from '../VButton.vue'
 import ViewLessonCard from './ViewLessonCard.vue'
+
 export default {
-  components: { VButton, ViewLessonCard },
+  components: { Icon, VButton, ViewLessonCard },
 
 }
 </script>

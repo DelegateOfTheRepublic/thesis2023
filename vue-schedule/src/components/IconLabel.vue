@@ -1,5 +1,5 @@
 <template>
-    <div v-if="showOnlyIcon" class="wrapper" :class="{'align-center': isTeacher}">
+    <div v-if="showOnlyIcon" class="wrapper" :class="[{'align-center': isTeacher}, {'right-icon': iconPosition == 'right'}]">
         <div name="icon" :class='[icon_name]' class="auto_size" :style="{'font-size': font_size + 'px'}"></div>
         <span><slot></slot></span>
     </div>
@@ -8,7 +8,18 @@
 
 <script>
 export default {
-    props: ['icon_name', 'font_size'],
+    props: {
+        icon_name: {
+            type: String,
+        },
+        font_size: {
+            type: Number | String,
+        },
+        iconPosition: {
+            type: String,
+            default: 'left'
+        }
+    },
     data(){
         return{
             isTeacher: this.icon_name=='icon-teacher',

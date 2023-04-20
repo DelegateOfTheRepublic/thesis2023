@@ -31,19 +31,16 @@
 </template>
 
 <script>
+import Icon from '../Icon.vue';
 import IconLabel from '../IconLabel.vue'
+
 export default {
-  components: { IconLabel },
+  components: { IconLabel, Icon },
 
 }
 </script>
 
 <style scoped>
-ul {
-    padding: 0;
-    margin: 0;
-    list-style-type: none;
-}
 .temps-explorer {
     background-color: bisque;
 }

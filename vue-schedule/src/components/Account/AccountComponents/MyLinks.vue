@@ -71,7 +71,8 @@ export default {
 
 <style scoped>
 .my-links {
-    background-color: bisque;
+    width: fit-content;
+    background-color: rgb(91, 255, 151);
 }
 .my-links__head {
     display: flex;

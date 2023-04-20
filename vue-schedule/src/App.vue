@@ -1,7 +1,9 @@
 <template>
   <div id="app">
     <navbar/>
-    <schedule-view/>
+    <!-- <create-schedule/> -->
+    <!-- <account/> -->
+    <catalogs-page/>
   </div>
 </template>
 
@@ -29,13 +31,5 @@ export default {
   display: flex;
   flex-direction: column;
   min-height: inherit;
-}
-
-.container{
-  margin-top: 80px;
-  display: flex;
-  align-items: center;
-  align-content: center;
-  justify-content: center;
 }
 </style>

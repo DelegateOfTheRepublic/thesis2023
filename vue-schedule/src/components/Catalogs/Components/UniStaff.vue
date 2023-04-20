@@ -44,7 +44,7 @@
             </div>
         </div>
         <div class="uni-staff__filter" v-if="showStaffFilter">
-            <v-input-group>
+            <v-input-group v-if="isStudent">
                 <select name="" id="">
                     <option disabled selected value="">Высшее образование</option>
                     <option value="">Бакалавриат</option>
@@ -61,7 +61,7 @@
                     <option value="">4</option>
                 </select>
             </v-input-group>
-            <v-input-group direction="row">
+            <v-input-group direction="row" v-if="isTeacher">
                 <select name="" id="">
                     <option disabled selected value="">Факультет</option>
                 </select>

@@ -1,20 +1,20 @@
 <template>
-    <div class="schedule-view">
-        <aside class="schedule-view__left">
+    <div class="content">
+        <aside class="content__left">
             <week-types/>
             <floors/>
         </aside>
-        <div class="schedule-view__middle">
-            <div class="schedule-view__middle-head">
+        <div class="content__middle">
+            <div class="content__middle-head">
                 <group-search/>
                 <weeks/>
                 <teacher-search/>
             </div>
-            <div class="schedule-view__middle-lessons">
+            <div class="content__middle-lessons">
                 <lesson-card v-for="i in 6" :key="i"/>
             </div>
         </div>
-        <aside class="schedule-view__right">
+        <aside class="content__right">
             <exams/>
         </aside>
     </div>

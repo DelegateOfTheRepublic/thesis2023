@@ -55,7 +55,9 @@ export default {
 
 <style scoped>
 .person-info {
-    display: flex;
+    width: fit-content;
+    height: fit-content;
+    display: inline-flex;
     flex-direction: column;
     gap: 50px;
     background-color: bisque;

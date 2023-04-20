@@ -1,17 +1,47 @@
 <template>
-    <!-- <view-lesson-card/> -->
-    <!-- <edit-lesson-card/> -->
-    <!-- <tool-bar/> -->
-    <!-- <templates-explorer/> -->
-    <!-- <child-items/> -->
-    <!-- <tabs/> -->
-    <!-- <new-schedule/> -->
-    <!-- <to-duplicate/> -->
-    <!-- <overlap-info/> -->
-    <!-- <small-template/> -->
-    <!-- <lesson-split/> -->
-    <!-- <add-group/> -->
-    <add-conference/>
+    <div class="content">
+        <div class="content__left">
+            <div class="study-group-info">
+                <p>Группа: {{ studyGroup.name }}</p>
+                <p>Курс: {{ studyGroup.course }}</p>
+                <p>Направление: {{ studyGroup.specialization }}</p>
+                <p>Факультет: {{ studyGroup.department }}</p>
+                <p>Форма обучения: {{ studyGroup.studyFormat }}</p>
+                <div class="study-group-info__semester">
+                    <p>Семестр: {{ semester.number }}</p>
+                    <div>
+                        <span>С: {{ semester.startDate }}</span>
+                        <span>По: {{ semester.endDate }}</span>
+                    </div>
+                </div>
+            </div>
+            <week-types/>
+        </div>
+        <div class="content__middle">
+            <div class="schedule-creator">
+                <tabs/>
+                <div class="schedule-creator__workspace">
+                    <weeks size="medium" class="center"/>
+                    <div class="schedule-creator__lessons">
+                        <div class="schedule-creator__lessons-row1">
+                            <view-lesson-card v-for="i in 2" :key="i"/>
+                            <edit-lesson-card/>
+                        </div>
+
+                        <div class="schedule-creator__lessons-row2">
+                            <view-lesson-card v-for="i in 2" :key="i"/>
+                            <edit-lesson-card/>
+                        </div>
+                    </div>
+                </div>
+                <to-duplicate/>
+            </div>
+        </div>
+        <div class="content__right">
+            <templates-explorer/>
+            <overlap-info/>
+        </div>
+    </div>
 </template>
 
 <script>
@@ -29,6 +59,8 @@ import ToDuplicate from './CreateSchedule/ToDuplicate.vue'
 import ToolBar from './CreateSchedule/ToolBar.vue'
 import ViewLessonCard from './CreateSchedule/ViewLessonCard.vue'
 import LessonPlaceholder from './LessonPlaceholder.vue'
+import Weeks from './Schedule View/Weeks.vue'
+import WeekTypes from './WeekTypes.vue'
 
 export default {
   components: {
@@ -46,17 +78,23 @@ export default {
         LessonSplit,
         AddGroup,
         AddConference,
+        WeekTypes,
+    Weeks
   },
   data() {
     return {
-            courses: null,
-            study_groups: null,
-            specializations: null,
-            day: '',
-            specialization: '',
-            course: '',
-            study_group: '',
-            res: {}
+            studyGroup: {
+                name: 'ПИ-4ИВТ186А',
+                course: '4',
+                specialization: 'Прикладная информатика',
+                department: 'ФМиИТ',
+                studyFormat: 'очный'
+            },
+            semester: {
+                number: '1',
+                startDate: '01.09.22',
+                endDate: '31.12.22'
+            }
       }
   },
   created() {
@@ -122,91 +160,40 @@ export default {
 </script>
 
 <style scoped>
-.container{
-    margin-top: 40px;
+.study-group-info {
+    background-color:cornflowerblue;
 }
-
-.schedule-wrapper{
-    display: flex;
-    justify-content: space-between;
-    width: 90%;
-    height: 850px;
-    margin-top: -40px;
-}
-
-.shadow{
-    border: 1px solid rgb(238, 238, 238);
-    border-radius: 10px;
-    box-shadow: 4px 4px 10px 0px rgba(34, 60, 80, 0.2);
-}
-
-.schedule-explorer{
-    width: 15%;
-    height: 25%;
+.study-group-info,
+.study-group-info__semester {
     display: flex;
     flex-direction: column;
-    justify-content: space-around;
-    padding: 10px;
+    gap: 10px;
 }
-
-.schedule-workspace{
-    width: 65%;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-around;
-    align-content: center;
-    align-items: center;
-}
-
-.workspace-wrapper{
-    display: grid;
-    width: 96%;
-    height: 90%;
-    grid-template-columns: repeat(3, 1fr);
-    grid-template-rows: repeat(2, 1fr);
+.study-group-info__semester {
+    background-color: blueviolet;
     gap: 15px;
 }
-
-.schedule-templates{
-    width: 15%;
+.study-group-info__semester>div {
+    display: flex;
+    gap: 30px;
 }
+.schedule-creator {
 
-.schedule-menu{
-    width: 96%;
+}
+.schedule-creator__workspace {
+    margin-top: 30px;
+}
+.schedule-creator__lessons {
+    margin-top: 20px;
+}
+.schedule-creator__lessons-row1,
+.schedule-creator__lessons-row2 {
     display: flex;
     justify-content: space-between;
-    align-items: center;
 }
-
-.study-group-info{
-    width: 55%;
-    display: flex;
-    justify-content: space-between;
+.schedule-creator__lessons-row1 {
 }
-
-.study-day, .study-group-info>div, .save-btn{
-    border: 2px solid gainsboro;
-    border-radius: 7px;
-    padding: 5px;
-    padding-left: 10px;
-    padding-right: 10px;
-    transition: all 0.2s ease-in-out;
-}
-
-.save-btn:hover{
-    cursor: pointer;
-    background-color: gainsboro;
-}
-
-.specialization{
-    height: 25%;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-}
-
-p{
-    pointer-events: none;
-    margin: 0;
+.schedule-creator__lessons-row2 {
+    margin-top: 25px;
 }
 </style>

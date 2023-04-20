@@ -64,6 +64,7 @@
 </template>
 
 <script>
+import Icon from '../Icon.vue'
 import vButton from '../VButton.vue'
 import Slider from '../Slider.vue'
 
@@ -75,6 +76,7 @@ export default {
         }
     },
     components: {
+        Icon,
         Slider,
         'v-button': vButton
     },
@@ -100,6 +102,7 @@ export default {
 
 <style scoped>
 .edit-card {
+    width: fit-content;
     display: flex;
     flex-direction: column;
     gap: 15px;
