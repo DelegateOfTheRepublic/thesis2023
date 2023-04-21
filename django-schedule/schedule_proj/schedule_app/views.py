@@ -11,7 +11,6 @@ from .services import *
 
 # Create your views here.
 class Logout(APIView):
-    """tmp"""
     def get(self, request, format=None):
         request.user.auth_token.delete()
         return JsonResponse(status=status.HTTP_200_OK)

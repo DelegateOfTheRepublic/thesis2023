@@ -89,7 +89,7 @@ DEFAULT_PARSER_CLASSES = [
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'schedule.sql',
+        'NAME': BASE_DIR / 'schedule_v2.sql',
     }
 }
 
